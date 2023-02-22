@@ -10,14 +10,13 @@ export default function TreeView(props)
     db = props.database;
 
     return(
-    <View
-        style={{height : 300}}>
+    <View>
         {
             props.list.map(folder =>
                 {
                     return(<Container
                         onDecide={onDecide}
-                        folder={{title : folder.name, id : folder.id}}
+                        folder={{title : folder.fName, id : folder.fID}}
                         layerLevel={0}/>)
                 })
         }
@@ -50,7 +49,7 @@ function Container(props)
                             for(let i=0;i<datatable.length;i++)
                             {
                                 const row = datatable.item(i);
-                                folderList.push({title : row.name, id : row.id});
+                                folderList.push({title : row.fName, id : row.fID});
                             }
 
                             setList(folderList);
@@ -94,7 +93,7 @@ function Item(props)
             <Image
                 style={{width : 50, height : 50, marginRight : 10}}
                 source={require('../drawable/folder_icon.png')}/>
-            <Text>{name}</Text>
+            <Text style={{color : 'black'}}>{name}</Text>
         </View>
     </TouchableOpacity>
     )

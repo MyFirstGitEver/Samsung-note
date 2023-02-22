@@ -19,13 +19,13 @@ export default function SortDialog(props)
                     <TouchableOpacity
                         onPress={() => setCriteria('date')}
                         style={[styles.btn_style, {backgroundColor : criteria == 'date' ? 'lightgray' : 'white'}]}>
-                        <Text>Theo ngày</Text>
+                        <Text style={{color : 'black'}}>Theo ngày</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity 
                         onPress={() => setCriteria('title')}
                         style={[styles.btn_style, {backgroundColor : criteria == 'title' ? 'lightgray' : 'white'}]}>
-                        <Text>Theo tiêu đề</Text>
+                        <Text style={{color : 'black'}}>Theo tiêu đề</Text>
                     </TouchableOpacity>
                 </View>
 

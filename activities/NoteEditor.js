@@ -88,7 +88,10 @@ export default function NoteEditor(props)
   {
     newTags = [];
 
-    RNFS.readFile(htmlDir + '/' + note.id, 'utf8').then(html => setHtml(html))
+    RNFS.readFile(htmlDir + '/' + note.id, 'utf8').then(html => 
+      {
+        setHtml(html)
+      })
     Utils.query(db, 'Select name from tag Where noteID = ?', [note.id], (datatable) =>
     {
       const initial = [];
@@ -113,6 +116,8 @@ export default function NoteEditor(props)
           });
 
           img.src = 'data:image/jpeg;base64,' + base64;
+
+          console.log(base64)
         }).catch(error => console.log(error))
     })
   }, [])
@@ -282,24 +287,23 @@ export default function NoteEditor(props)
                   ref={painterRef}
                   style={{position : 'absolute', backgroundColor : 'black', width : '100%', height : '100%'}}/>
 
-                <ScrollView>
-                  <RichEditor
-                    onHeightChange={(height) =>
+                <RichEditor
+                  style={{flex : 1}}
+                  onHeightChange={(height) =>
+                  {
+                    if(height == HEIGHT)
                     {
-                      if(height == HEIGHT)
-                      {
-                          setFull(true)
-                      }
-                    }}
-                    onChange={(text) => 
-                    {
-                      if(!full)
-                        setHtml(text);
-                    }}
-                    ref={textInputRef}
-                    editorStyle={{color : 'white', backgroundColor : 'transparent'}}
-                    initialContentHTML={html}/>
-                </ScrollView>
+                        setFull(true)
+                    }
+                  }}
+                  onChange={(text) => 
+                  {
+                    if(!full)
+                      setHtml(text);
+                  }}
+                  ref={textInputRef}
+                  editorStyle={{color : 'white', backgroundColor : 'transparent'}}
+                  initialContentHTML={html}/>
           </View>
         </ViewShot>
 
@@ -385,5 +389,5 @@ export default function NoteEditor(props)
 
 const styles = StyleSheet.create({
   text_style:
-  {backgroundColor : 'white', padding : 10, borderRadius : 16, fontSize : 13, margin : 10}
+  {backgroundColor : 'white', padding : 10, borderRadius : 16, fontSize : 13, margin : 10, color : 'black'}
 })

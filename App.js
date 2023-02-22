@@ -25,3 +25,20 @@ export default function App()
     </NavigationContainer>
   )
 }
+
+const htmlDir = Utils.filesDir + '/html';
+const canvasDir = Utils.filesDir + '/canvas';
+
+Utils.query(db, 'Select * from note where title = \'Note 2\';', [], (datatable) =>
+        {
+          const row = datatable.item(0);
+          console.log('queried!!');
+                RNFS.readFile(htmlDir + '/' + row.id, 'utf8').then(html => 
+                  {
+                    console.log("From App.js: " + html);
+                  })
+                  RNFS.readFile(canvasDir + '/' + row.id, 'base64').then(base64 => 
+                    {
+                      console.log("From App.js: " + base64);
+                    })
+        })

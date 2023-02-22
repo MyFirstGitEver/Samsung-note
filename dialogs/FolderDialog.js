@@ -16,12 +16,12 @@ export default function FolderDialog(props)
                 <TextInput
                     onChangeText={(text) => setFolderName(text)}
                     placeholder="Nhập tên thư mục"
-                    style={{borderRadius : 16, borderWidth : 1, borderColor : 'lightgray', marginHorizontal : 16}}/>
+                    style={{borderRadius : 16, borderWidth : 1, borderColor : 'lightgray', marginHorizontal : 16, color : 'black'}}/>
                 
                 <View style={{flexDirection : 'row', marginHorizontal : 16, justifyContent : 'space-between', marginVertical : 20}}>
                     <TouchableOpacity
                         onPress={() => onCreate(folderName)}>
-                        <Text style={{fontSize : 18}}>Tạo</Text>
+                        <Text style={{fontSize : 18, color : 'black'}}>Tạo</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity

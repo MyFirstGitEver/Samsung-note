@@ -29,7 +29,7 @@ export default function LocateDialog(props)
         <View style={{justifyContent: 'center', flex : 1, marginBottom : 30, marginHorizontal : 30}}>
             <View style={{backgroundColor : 'white', borderRadius : 16, height : 300}}>
                 <Text style={{fontWeight : 'bold', marginLeft : 30, marginBottom : 20}}>Đi tới</Text>
-                <ScrollView>
+                <ScrollView style={{height : 300}}>
                     <TreeView
                         list={list}
                         database={db}
@@ -37,7 +37,7 @@ export default function LocateDialog(props)
                 </ScrollView>
 
                 <View style={{flexDirection : 'row', justifyContent : 'space-around', marginBottom : 10}}>
-                    <TouchableOpacity onPress={() => onMoveToMainFolder()}><Text>Về thư mục chính</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={() => onMoveToMainFolder()}><Text style={{color : 'black'}}>Về thư mục chính</Text></TouchableOpacity>
                     <TouchableOpacity onPress={() => onClose()}><Text style={{color : 'red'}}>Hủy</Text></TouchableOpacity>
                 </View>
             </View>

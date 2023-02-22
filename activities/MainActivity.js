@@ -90,6 +90,7 @@ export default function MainActivity(props)
 
         if(oldPreview != null)
         {
+            console.log(oldPreview);
             RNFS.unlink(oldPreview).then((() => console.log('deleted!!')))
         }
 
@@ -106,7 +107,7 @@ export default function MainActivity(props)
                 Utils.query(db, 'INSERT INTO tag(name, noteID) VALUES(?, ?)', [tags[i], lastNote.id], (datatable) => {});
         }
         else
-        {   
+        {
             Utils.query(db, 'INSERT INTO note(folderID, title, preview, date) VALUES(?, ? , ?, ?);',
             [currentFolder, result.title, result.preview, result.date], (datatable) => 
             {
@@ -127,6 +128,8 @@ export default function MainActivity(props)
                         })
                 })
             });
+
+            setNoteCounter(noteCounter + 1)
         }
     }
 
@@ -143,8 +146,8 @@ export default function MainActivity(props)
 
                 <View>
                     <Text
-                        style={{fontWeight : 'bold', fontSize : 18}}>{folder.title}</Text>
-                    <Text>{'Có ' + noteCounter + ' ghi chú, ' + folderCounter + ' thư mục'}</Text>
+                        style={{fontWeight : 'bold', fontSize : 18, color: 'black'}}>{folder.title}</Text>
+                    <Text style={{color : 'black'}}>{'Có ' + noteCounter + ' ghi chú, ' + folderCounter + ' thư mục'}</Text>
                 </View>
 
                 <TouchableOpacity
@@ -164,13 +167,13 @@ export default function MainActivity(props)
                         onCreate={(folderName) =>
                         {
                             setOption('null');
-                            Utils.query(db, 'Select * from folder Where name = ? AND parentID = ?', 
+                            Utils.query(db, 'Select * from folder Where fName = ? AND parentID = ?', 
                             [folderName, currentFolder], (datatable) =>
                             {
                                 if(datatable.length != 0)
                                     Alert.alert('This folder name already exists');
                                 else
-                                    Utils.query(db, 'INSERT INTO folder(parentID, name) VALUES(?, ?)',
+                                    Utils.query(db, 'INSERT INTO folder(parentID, fName) VALUES(?, ?)',
                                     [currentFolder, folderName], (datatable) => {})
                             })
                         }}/>
@@ -292,7 +295,7 @@ export default function MainActivity(props)
             {
                 list.length == 0 &&
                 <View style={{alignItems : 'center', justifyContent : 'center', flex : 1}}>
-                    <Text style={{marginBottom : 30}}>{'Chưa có ghi chú nào cả :('}</Text>
+                    <Text style={{marginBottom : 30, color : 'black'}}>{'Chưa có ghi chú nào cả :('}</Text>
                     <Image
                         style={{width : 60, height : 60}}
                         source={require('../drawable/sad.png')}/>

@@ -10,8 +10,9 @@ export default function NoteHeader(props)
     const title = props.title;
 
     return(
-    <View style={{flexDirection : 'row', justifyContent : 'space-between', alignItems : 'center'}}>
-        <View style={{flexDirection : 'row', alignItems : 'center'}}>
+    <View style={{flexDirection : 'row', 
+    justifyContent : 'space-between', alignItems : 'center', borderBottomColor : 'lightgray', borderBottomWidth : 1}}>
+        <View style={{flexDirection : 'row', alignItems : 'center', flex : 1}}>
           <TouchableOpacity
             onPress={() => props.onSave()}
             style={{padding : 3, backgroundColor : 'lightgray', borderRadius : 20, marginLeft : 5}}>
@@ -23,7 +24,7 @@ export default function NoteHeader(props)
           <TextInput
             defaultValue={title}
             onChangeText={(text) => onTitleChange(text)}
-            style={{color : 'white'}}
+            style={{color : 'white', flex : 1}}
             placeholderTextColor='white'
             placeholder="Tiêu đề"/>
         </View>

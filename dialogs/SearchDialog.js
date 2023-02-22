@@ -24,7 +24,7 @@ export default function SearchDialog(props)
 
     const onTyping = (text) =>
     {
-        Utils.query(db, 'Select * from note Where title LIKE ?;', ['%' + text + '%'], (datatable) =>
+        Utils.query(db, 'Select * from note n INNER JOIN folder f ON n.folderID = f.fID AND n.title LIKE ?;', ['%' + text + '%'], (datatable) =>
         {
             const list = [];
 
@@ -35,10 +35,13 @@ export default function SearchDialog(props)
                 list.push(datatable.item(i));
             }
 
-            Utils.query(db, 'Select * from tag t INNER JOIN note n ON t.noteID = n.id AND t.name LIKE ?', ['%' + text + '%'], (datatable) =>
+            console.log(list)
+
+            Utils.query(db, 'Select * from(Select * from tag t INNER JOIN note n ON t.noteID = n.id AND t.name LIKE ?) m INNER JOIN ' +
+            'folder f ON m.folderID = f.fID', ['%' + text + '%'], (datatable) =>
             {
                 const m = new Map();
-                const note_info = new Map();       
+                const note_info = new Map();
 
                 for(let i=0;i<datatable.length;i++)
                 {
@@ -50,7 +53,7 @@ export default function SearchDialog(props)
                     if(m.get(row.noteID) == null)
                     {
                         note_info.set(row.noteID, {id : row.id, folderID : row.folderID, title : row.title, 
-                            preview : row.preview, date : row.date})
+                            preview : row.preview, date : row.date, fName : row.fName})
                         m.set(row.noteID, [row.name]);
                     }
                     else
@@ -58,6 +61,8 @@ export default function SearchDialog(props)
                 }
 
                 const iterator = m.entries();
+
+                console.log(m);
 
                 while(true)
                 {
@@ -92,12 +97,12 @@ export default function SearchDialog(props)
                         onTyping(text);
                         setSearchTerm(text);
                     }}
-                    style={{flex : 1}}/>
+                    style={{flex : 1, color : 'black'}}/>
             </View>
             {
                 searchTerm == '' &&
                 (<View style={{alignItems : 'center', justifyContent : 'center', flex : 1}}>
-                    <Text>Nhập từ trên thanh công cụ để tìm kiếm</Text>
+                    <Text style={{color : 'black'}}>Nhập từ trên thanh công cụ để tìm kiếm</Text>
                     <Image
                         style={{width : 60, height : 60, marginTop : 10}}
                         source={require('../drawable/search.png')}/>
@@ -107,7 +112,7 @@ export default function SearchDialog(props)
             {
                 searchList.length == 0 && searchTerm != '' &&
                 (<View style={{alignItems : 'center', justifyContent : 'center', flex : 1}}>
-                    <Text>{'Không tìm thấy ghi chú có liên quan :('}</Text>
+                    <Text style={{color : 'black'}}>{'Không tìm thấy ghi chú có liên quan :('}</Text>
                     <Image
                         style={{width : 60, height : 60, marginTop : 10}}
                         source={require('../drawable/sad.png')}/>
@@ -120,14 +125,18 @@ export default function SearchDialog(props)
                     {
                         searchList.map((item, i) =>
                             {
-                                return(<ANote
+                                return(
+                                <View>
+                                    <Text style={{color : 'black', marginLeft : 10}}>{'Từ thư mục \''  + item.fName + '\''}</Text>
+                                    <ANote
                                     tagList={item.tagList}
                                     onOpenNote={() => 
                                     {
                                         onClose();
                                         onOpenNote(item, i);
                                     }}
-                                    note={item}/>)
+                                    note={item}/>
+                                </View>)
                             })
                     }
                 </ScrollView>)
